@@ -10,11 +10,17 @@ class MarsData(BaseModel):
     soil_composition: Dict[str, int]  # Dictionary of gases (name -> amount)
     year: int  # Year of the data
 
+# Earth
+class EarthData(BaseModel):
+    year: int 
+    crop_yield: int
+
 # In-memory database (for simplicity)
 fake_db = {}
 
-# Initialize a global counter for the Mars ID
-mars_id_counter = 1  # Start ID counter from 1
+# Initialize a global counter for the Mars and Earth ID
+mars_id_counter = 1  
+earth_id_counter = 1
 
 # CREATE - POST request to create Mars data
 @app.post("/mars/", response_model=MarsData)
@@ -47,3 +53,34 @@ async def delete_mars_data(mars_id: int):
         raise HTTPException(status_code=404, detail="Mars data not found")
     deleted_data = fake_db.pop(mars_id)  # Remove the entry from the fake database
     return deleted_data  # Return the data that was deleted
+
+fake_db = {}
+
+# Earth CRUD Methods (POST, GET, PUT, DELETE)
+@app.post("/earth/", response_model=EarthData)
+async def create_earth_data(data: EarthData):
+    global earth_id_counter
+    earth_id = earth_id_counter
+    fake_db[earth_id] = data
+    earth_id_counter += 1
+    return data
+
+@app.get("/earth/{earth_id}", response_model=EarthData)
+async def get_earth_data(earth_id: int):
+    if earth_id not in fake_db:
+        raise HTTPException(status_code=404, detail="Earth data not found")
+    return fake_db[earth_id]
+
+@app.put("/earth/{earth_id}", response_model=EarthData)
+async def update_earth_data(earth_id: int, data: EarthData):
+    if earth_id not in fake_db:
+        raise HTTPException(status_code=404, detail="Earth data not found")
+    fake_db[earth_id] = data
+    return data
+
+@app.delete("/earth/{earth_id}", response_model=EarthData)
+async def delete_earth_data(earth_id: int):
+    if earth_id not in fake_db:
+        raise HTTPException(status_code=404, detail="Earth data not found")
+    deleted_data = fake_db.pop(earth_id)
+    return deleted_data
