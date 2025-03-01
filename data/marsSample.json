@@ -1,0 +1,11 @@
+{
+    "Water": 500.0,
+    "Soil Composition": {
+      "Oxygen": "33%",
+      "Nitrogen": "2.7%",
+      "Carbon Dioxide": "95%",
+      "Argon": "1.6%"
+    },
+    "Year": 2025
+  }
+  

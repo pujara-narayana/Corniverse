@@ -2,8 +2,10 @@ const express = require('express');
 const app = express(); 
 const fs = require('fs');
 
-let temp;
-let it;
+let temperature = 0
+let item = 0
+
+let testing_variable = 1
 
 app.use(express.urlencoded({extended:true}));
 
@@ -41,8 +43,6 @@ app.post('/submit', (req, res) => {
     console.log(`Received temperature: ${temperature}, item: ${item}`);
   
     res.send(`Received ${temperature} and ${item}`);
-
-    
   });
 
 const PORT = 3000;
@@ -50,6 +50,4 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-function store_earth_data(year, integer) {
-    
-}
+
