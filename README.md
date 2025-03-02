@@ -1,7 +1,7 @@
 
 # Corniverse
 
-Corniverse is an immersive space simulation designed to answer one of humanity's most interesting questions: How much corn can we grow on Earth and Mars? Through a combination of 3D models, AI-driven predictions, and interactive features.
+[Corniverse](https://corniverse.vercel.app/) is an immersive space simulation designed to answer one of humanity's most interesting questions: How much corn can we grow on Earth and Mars? Through a combination of 3D models, AI-driven predictions, and interactive features.
 
 # Features:
 
