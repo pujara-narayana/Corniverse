@@ -3,6 +3,9 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware  
 from typing import Dict
 from statistics import mean
+from fastapi import FastAPI, Response
+from fastapi.responses import HTMLResponse
+from python.EarthPredict import plot_yield_trends
 
 app = FastAPI()
 
@@ -107,3 +110,17 @@ async def compute_average_water_content():
 async def get_average_water_content():
     average = await compute_average_water_content()
     return {"average_water_content": average}
+
+@app.get("/plot", response_class=HTMLResponse)
+async def get_plot():
+    plot_base64 = plot_yield_trends()
+
+    html_content = f"""
+    <html>
+        <body>
+            <h1>Yield Predictions</h1>
+            <img src="data:image/png;base64,{plot_base64}" alt="Yield Predictions Plot">
+        </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
