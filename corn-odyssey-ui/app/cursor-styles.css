@@ -1,0 +1,60 @@
+/* Custom rocket cursor styles */
+
+/* Base cursor class - makes the default cursor invisible */
+.rocket-cursor {
+    cursor: none;
+  }
+  
+  /* The custom cursor element */
+  .custom-cursor {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    background-image: url('/images/rocket-cursor.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transform: rotate(-45deg) translate(-50%, -50%);
+    transform-origin: top left;
+  }
+  
+  /* When clicking */
+  .custom-cursor.clicking {
+    transform: rotate(-45deg) translate(-50%, -50%) scale(0.9);
+  }
+  
+  /* Add stars animation */
+  @keyframes twinkle {
+    0% { opacity: 0.2; }
+    50% { opacity: 1; }
+    100% { opacity: 0.2; }
+  }
+  
+  .star {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: twinkle 2s infinite;
+  }
+  
+  /* Custom scrollbar for space theme */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #000000;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #333366;
+    border-radius: 5px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4444aa;
+  }

@@ -1,18 +1,31 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import SpaceScene from "@/components/SpaceScene";
-import Link from "next/link";
-import "../app/cursor-styles.css"; // Adjusted path
 
-export default function Home() {
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import "..app//cursor-styles.css";
+
+// Import SpaceScene with SSR disabled
+const SpaceScene = dynamic(() => import("@/components/SpaceScene"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-screen flex items-center justify-center bg-black">
+      <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  ),
+});
+
+export default function HomePage() {
   const [immersive, setImmersive] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isClicking, setIsClicking] = useState(false);
   const [stars, setStars] = useState<Array<{ id: number; x: number; y: number; size: number; delay: number }>>([]);
+  const [shootingStars, setShootingStars] = useState<Array<{ id: number; top: number; left: number; delay: number }>>([]);
+  const homeRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   
-  // Generate stars for background
+  // Generate stars
   useEffect(() => {
     const generateStars = () => {
       const starCount = 100;
@@ -31,7 +44,24 @@ export default function Home() {
       setStars(newStars);
     };
     
+    const generateShootingStars = () => {
+      const count = 5;
+      const newShootingStars = [];
+      
+      for (let i = 0; i < count; i++) {
+        newShootingStars.push({
+          id: i,
+          top: Math.random() * 70,
+          left: Math.random() * 70,
+          delay: i * 5 + Math.random() * 5
+        });
+      }
+      
+      setShootingStars(newShootingStars);
+    };
+    
     generateStars();
+    generateShootingStars();
   }, []);
   
   // Handle scroll events
@@ -73,20 +103,11 @@ export default function Home() {
   }, []);
   
   // Calculate opacity based on scroll
-  const homepageOpacity = Math.max(0, 1 - scrollPosition / 600);
-  const spaceSceneOpacity = Math.min(1, (scrollPosition - 300) / 300);
-  
-  // Begin Journey function
-  const beginJourney = () => {
-    setImmersive(true);
-    window.scrollTo({
-      top: 800,
-      behavior: 'smooth'
-    });
-  };
+  const headerOpacity = Math.max(0, 1 - scrollPosition / 700);
+  const spaceSceneOpacity = Math.min(1, scrollPosition / 700);
   
   return (
-    <main className="rocket-cursor relative w-full">
+    <div className="rocket-cursor relative w-full bg-black text-white overflow-hidden" ref={homeRef}>
       {/* Custom cursor */}
       <div 
         ref={cursorRef}
@@ -94,31 +115,40 @@ export default function Home() {
         style={{ left: cursorPosition.x, top: cursorPosition.y }}
       ></div>
       
-      {/* Stars background */}
+      {/* Stars */}
       {stars.map(star => (
         <div
           key={star.id}
-          className="star fixed"
+          className="star"
           style={{
             left: `${star.x}%`,
             top: `${star.y}%`,
             width: `${star.size}px`,
             height: `${star.size}px`,
-            animationDelay: `${star.delay}s`,
-            zIndex: 0
+            animationDelay: `${star.delay}s`
           }}
         />
       ))}
       
-      {/* Homepage Section - First screen */}
+      {/* Shooting stars */}
+      {shootingStars.map(star => (
+        <div
+          key={star.id}
+          className="shooting-star"
+          style={{
+            top: `${star.top}%`,
+            left: `${star.left}%`,
+            animationDelay: `${star.delay}s`
+          }}
+        />
+      ))}
+      
+      {/* Hero section */}
       <section 
-        className="relative h-screen bg-black flex flex-col justify-center items-center"
-        style={{ 
-          opacity: homepageOpacity,
-          visibility: homepageOpacity > 0.1 ? 'visible' : 'hidden',
-        }}
+        className="relative min-h-screen flex flex-col justify-center items-center"
+        style={{ opacity: headerOpacity }}
       >
-        <div className="text-center px-4 max-w-4xl mx-auto z-10">
+        <div className="text-center px-4 max-w-4xl mx-auto">
           <h1 className="text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-red-500 tracking-tight">
             CORN ODYSSEY 2100
           </h1>
@@ -128,7 +158,7 @@ export default function Home() {
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12">
             <button 
-              onClick={beginJourney}
+              onClick={() => setImmersive(true)}
               className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold text-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black"
             >
               Begin Cosmic Journey
@@ -179,19 +209,18 @@ export default function Home() {
         </div>
       </section>
       
-      {/* SpaceScene Section - Second screen */}
+      {/* SpaceScene Section */}
       <section 
-        className="relative h-screen bg-black"
-        style={{ 
-          opacity: spaceSceneOpacity,
-          visibility: spaceSceneOpacity > 0.1 ? 'visible' : 'hidden'
-        }}
+        className="min-h-screen transition-opacity duration-500"
+        style={{ opacity: spaceSceneOpacity }}
       >
         <SpaceScene immersive={immersive} toggleImmersive={() => setImmersive(!immersive)} />
       </section>
       
-      {/* Extra space for scrolling */}
-      <div className="h-screen bg-black"></div>
-    </main>
+      {/* Footer */}
+      <footer className="bg-black bg-opacity-70 text-white p-4 text-center text-sm">
+        <p>&copy; {new Date().getFullYear()} Corn Odyssey 2100. A cosmic journey through space agriculture.</p>
+      </footer>
+    </div>
   );
 }
