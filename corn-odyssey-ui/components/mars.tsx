@@ -174,7 +174,7 @@ export default function Mars() {
               The frontier of human space colonization and future home to corn agriculture.
             </p>
             <p className="text-lg text-red-300">
-              Our predictive models show rapid growth in Martian corn yield through 2100.
+              Our predictive models show rapid growth in Martian corn yield with similar soil composition to that of earth (since soil of mars is just sand) through 2100.
             </p>
             
             {/* Corn display controls with Mars styling */}
