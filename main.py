@@ -2,16 +2,17 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware  
 from typing import Dict
+from statistics import mean
 
 app = FastAPI()
 
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for now, modify as needed
+    allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"], 
+    allow_headers=["*"],  
 )
 
 # Define the MarsData model
@@ -23,7 +24,7 @@ class MarsData(BaseModel):
 class EarthData(BaseModel):
     crop_yield: int
 
-# In-memory database (for simplicity)
+# In-memory database 
 fake_db = {}
 
 # Initialize a global counter for the Mars and Earth ID
@@ -33,34 +34,34 @@ earth_id_counter = 1
 # CREATE - POST request to create Mars data
 @app.post("/mars/", response_model=MarsData)
 async def create_mars_data(data: MarsData):
-    global mars_id_counter  # Use the global counter
-    mars_id = mars_id_counter  # Assign current counter value as the Mars ID
-    fake_db[mars_id] = data  # Store the Mars data in fake_db with the generated ID
-    mars_id_counter += 1  # Increment the ID counter for the next entry
-    return data  # Return the data that was added
+    global mars_id_counter  
+    mars_id = mars_id_counter 
+    fake_db[mars_id] = data 
+    mars_id_counter += 1  
+    return data 
 
 # READ - GET request to retrieve Mars data by ID
 @app.get("/mars/{mars_id}", response_model=MarsData)
 async def get_mars_data(mars_id: int):
     if mars_id not in fake_db:
         raise HTTPException(status_code=404, detail="Mars data not found")
-    return fake_db[mars_id]  # Return the requested Mars data
+    return fake_db[mars_id]  
 
 # UPDATE - PUT request to update Mars data
 @app.put("/mars/{mars_id}", response_model=MarsData)
 async def update_mars_data(mars_id: int, data: MarsData):
     if mars_id not in fake_db:
         raise HTTPException(status_code=404, detail="Mars data not found")
-    fake_db[mars_id] = data  # Update the entry in the fake database
-    return data  # Return the updated data
+    fake_db[mars_id] = data 
+    return data 
 
 # DELETE - DELETE request to remove Mars data by ID
 @app.delete("/mars/{mars_id}", response_model=MarsData)
 async def delete_mars_data(mars_id: int):
     if mars_id not in fake_db:
         raise HTTPException(status_code=404, detail="Mars data not found")
-    deleted_data = fake_db.pop(mars_id)  # Remove the entry from the fake database
-    return deleted_data  # Return the data that was deleted
+    deleted_data = fake_db.pop(mars_id) 
+    return deleted_data  
 
 fake_db = {}
 
@@ -93,3 +94,16 @@ async def delete_earth_data(earth_id: int):
     deleted_data = fake_db.pop(earth_id)
     return deleted_data
 
+async def compute_average_water_content():
+    if not fake_db:
+        return 0
+    water_contents = []
+    for data in fake_db.values():
+        if isinstance(data, MarsData):
+            water_contents.append(data.water)
+    return mean(water_contents) if water_contents else 0
+
+@app.get("/average-water-content")
+async def get_average_water_content():
+    average = await compute_average_water_content()
+    return {"average_water_content": average}

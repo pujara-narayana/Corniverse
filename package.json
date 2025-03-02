@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/pujara-narayana/Corniverse-#readme",
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "np": "^10.2.0",
+    "pandas": "^0.0.3",
+    "pd": "^0.8.1"
   }
 }
