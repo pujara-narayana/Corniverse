@@ -109,7 +109,7 @@ export default function Mars() {
   async function fetchPrediction(year: number) {
     try {
       setLoading(true);
-      const response = await fetch(`http://127.0.0.1:8000/marsPredict/${year}`, {
+      const response = await fetch(`https://corniverse.onrender.com/marsPredict/${year}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });

@@ -196,3 +196,7 @@ def generate_fallback_response(messages, context):
     
     # Default fallback response
     return "I'm CornHusker, your expert on corn agriculture in space. While I'm having trouble connecting to my knowledge base right now, I can still help with basic information about corn cultivation on Earth and Mars."
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

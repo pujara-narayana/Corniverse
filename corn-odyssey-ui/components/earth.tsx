@@ -459,7 +459,7 @@ export default function Earth() {
   async function fetchPrediction(year: number) {
     try {
       setLoading(true);
-      const response = await fetch(`http://127.0.0.1:8000/predict/${year}`, {
+      const response = await fetch(`https://corniverse.onrender.com/predict/${year}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
