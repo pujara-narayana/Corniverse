@@ -127,6 +127,7 @@ class YieldPredictor:
         plt.ylabel("Yield (Mg/ha)")
         plt.title("📈 Yield Predictions (2001 - 2100)")
         plt.legend()
+        
         plt.savefig("plot 1.png")
 
     def plot_climate_trends(self):

@@ -126,3 +126,9 @@ async def get_climate_plot():
     predictor = YieldPredictor()
     img_base64 = predictor.plot_yield_trends()
     return JSONResponse(content={"image": f"data:image/png;base64,{img_base64}"})
+
+@app.get("/yield-prediction/{earth_id}")
+async def get_yield_prediction(data: EarthData):
+    predictor = YieldPredictor()
+    prediction = await predictor.predict_yield()
+    return data
