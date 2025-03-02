@@ -6,6 +6,5 @@ scikit-learn
 fastapi
 pydantic
 uvicorn
-json
 random
 statistics
