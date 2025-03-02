@@ -5,7 +5,10 @@ from typing import Dict
 from statistics import mean
 from fastapi import FastAPI, Response
 from fastapi.responses import HTMLResponse
-from python.EarthPredict import plot_yield_trends
+import sys
+import os
+sys.path.append(os.path.abspath("python")) 
+from python.EarthPredict import *
 
 app = FastAPI()
 
@@ -111,16 +114,7 @@ async def get_average_water_content():
     average = await compute_average_water_content()
     return {"average_water_content": average}
 
-@app.get("/plot", response_class=HTMLResponse)
+@app.get("/plot-yield/")
 async def get_plot():
-    plot_base64 = plot_yield_trends()
-
-    html_content = f"""
-    <html>
-        <body>
-            <h1>Yield Predictions</h1>
-            <img src="data:image/png;base64,{plot_base64}" alt="Yield Predictions Plot">
-        </body>
-    </html>
-    """
-    return HTMLResponse(content=html_content)
+    img_base64 = plot_yield_trends()
+    return {"image": f"data:image/png;base64,{img_base64}"}

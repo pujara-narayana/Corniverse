@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FastAPI Frontend</title>
     <script>
+        // Function to fetch the yield trends graph
+        async function getPlot() {
+            try {
+                const response = await fetch("http://127.0.0.1:8000/plot-yield/");
+                const data = await response.json();
+                document.getElementById("yield-plot").src = data.image;
+            } catch (error) {
+                console.error("Error fetching plot:", error);
+            }
+        }
+        getPlot()
         // Function to fetch the average water content from the FastAPI endpoint
         async function getAverageWaterContent() {
             try {
@@ -125,7 +136,7 @@
     <pre id="result"></pre>
     
     <h2>Average Trends on Earth from preexisting data</h2>
-
+    <pre id="yield-plot"></pre>
 
 </body>
 </html>

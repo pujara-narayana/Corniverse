@@ -4,6 +4,7 @@ import numpy as np
 import random
 import io
 import matplotlib.pyplot as plt
+import base64
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import VarianceThreshold
 
@@ -127,14 +128,12 @@ class YieldPredictor:
         plt.legend()
         plt.show()
 
-        # Save the plot as a PNG image in a BytesIO object
         img = io.BytesIO()
         plt.savefig(img, format='png')
-        img.seek(0)  # Move the pointer to the beginning of the image
+        img.seek(0) 
 
-        # Convert the image to base64 to send it over HTTP
         img_base64 = base64.b64encode(img.getvalue()).decode('utf-8')
-        plt.close()  # Close the plot to free memory
+        plt.close() 
 
         return img_base64
         pass
