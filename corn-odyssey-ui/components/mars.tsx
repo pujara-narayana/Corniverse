@@ -14,17 +14,12 @@ const MarsScene = dynamic(() => import("./MarsScene"), {
   ),
 });
 
-// Dynamic import for the CornField component to avoid SSR issues
-const CornField = dynamic(() => import("./CornField"), {
-  ssr: false,
-  loading: () => <div className="text-white text-center">Loading corn field...</div>,
-});
+
 
 export default function Mars() {
   const [scrollY, setScrollY] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [cornCount, setCornCount] = useState(3); // Default count (lower for Mars initially)
-  const [showCornField, setShowCornField] = useState(false);
   
   // Corn yield data
   const cornYieldData = [
@@ -71,10 +66,7 @@ export default function Mars() {
     }
   };
 
-  // Toggle corn field visibility
-  const toggleCornField = () => {
-    setShowCornField(!showCornField);
-  };
+
   
   // Calculate opacity for fade effects
   const headerOpacity = Math.max(0, Math.min(1, 1 - scrollY / 500));
@@ -87,24 +79,7 @@ export default function Mars() {
         <MarsScene />
       </div>
       
-      {/* Corn Field Overlay when active */}
-      {showCornField && (
-        <div className="fixed inset-0 z-30 bg-black bg-opacity-80 flex flex-col items-center justify-center">
-          <div className="w-full h-[60vh]">
-            <CornField count={cornCount} planetType="mars" />
-          </div>
-          <div className="bg-black bg-opacity-70 p-4 rounded-lg mt-4 text-center">
-            <h3 className="text-xl font-bold mb-2">Mars Corn Simulation</h3>
-            <p className="mb-4">Displaying {cornCount} corn plants</p>
-            <button 
-              onClick={toggleCornField}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
-            >
-              Close Simulation
-            </button>
-          </div>
-        </div>
-      )}
+      
       
       {/* Subtle gradient overlay to improve text readability */}
       <div 
@@ -157,7 +132,7 @@ export default function Mars() {
                   />
                 </label>
                 <button 
-                  onClick={toggleCornField}
+                  onClick={() => setCornCount(5)}
                   className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
                 >
                   Display Corn
