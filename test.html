@@ -27,40 +27,6 @@
                 console.error("Error fetching plot:", error);
             }
         }
-        // Function to create Earth yield prediction
-        async function createYieldPrediction() {
-            const year = parseInt(document.getElementById('year').value);
-
-            const response = await fetch('http://127.0.0.1:8000/earth/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    year: year,
-                })
-            });
-
-            const data = await response.json();
-            alert('Prediction generated');
-            console.log('Entered Year to retrieve prediction', data);
-        }
-
-        // Function to get yield prediction
-        async function getYieldPrediction() {
-        const earth_id = document.getElementById('year').value;
-
-        const response = await fetch(`http://127.0.0.1:8000/mars/${earth_id}`);
-            if (response.ok) {
-                const data = await response.json();
-                document.getElementById('earthData').innerText = JSON.stringify(data, null, 2);
-            } else {
-                alert('Year not found');
-            }
-        
-            const data = await response.json();
-            console.log('Yield prediction generated', data);
-        }
         
         // Function to fetch the average water content from the FastAPI endpoint
         async function getAverageWaterContent() {
@@ -91,6 +57,7 @@
                     soil_composition: soilComposition,
                 })
             });
+            alert('Mars Data Created');
         }
         // Function to fetch Mars data by ID
         async function getMarsData() {
@@ -175,10 +142,7 @@
 
     <h2>Get Yield Prediction for a specific year</h2>
     <input type="number" id="year" placeholder="Year" />
-    <button onclick="createYieldPrediction()">Submit</button>
     
-    <button onclick="getYieldPrediction()">Get prediction</button>
-    <pre id="earthData"></pre>
 
 
     <h2>Average Water Content</h2>
