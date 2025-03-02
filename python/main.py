@@ -5,10 +5,11 @@ from typing import Dict
 from statistics import mean
 from fastapi import FastAPI, Response
 from fastapi.responses import HTMLResponse
+from fastapi.responses import JSONResponse
 import sys
 import os
 sys.path.append(os.path.abspath("python")) 
-from python.EarthPredict import *
+from EarthPredict import YieldPredictor
 
 app = FastAPI()
 
@@ -116,5 +117,12 @@ async def get_average_water_content():
 
 @app.get("/plot-yield/")
 async def get_plot():
-    img_base64 = plot_yield_trends()
-    return {"image": f"data:image/png;base64,{img_base64}"}
+    predictor = YieldPredictor()
+    img_base64 = predictor.plot_yield_trends()
+    return JSONResponse(content={"image": f"data:image/png;base64,{img_base64}"})
+
+@app.get("/plot-climate/")
+async def get_climate_plot():
+    predictor = YieldPredictor()
+    img_base64 = predictor.plot_yield_trends()
+    return JSONResponse(content={"image": f"data:image/png;base64,{img_base64}"})

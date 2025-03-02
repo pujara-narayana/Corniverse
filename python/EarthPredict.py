@@ -5,6 +5,7 @@ import random
 import io
 import matplotlib.pyplot as plt
 import base64
+import os
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import VarianceThreshold
 
@@ -126,17 +127,7 @@ class YieldPredictor:
         plt.ylabel("Yield (Mg/ha)")
         plt.title("📈 Yield Predictions (2001 - 2100)")
         plt.legend()
-        plt.show()
-
-        img = io.BytesIO()
-        plt.savefig(img, format='png')
-        img.seek(0) 
-
-        img_base64 = base64.b64encode(img.getvalue()).decode('utf-8')
-        plt.close() 
-
-        return img_base64
-        pass
+        plt.savefig("plot 1.png")
 
     def plot_climate_trends(self):
         """Plot temperature and precipitation variations over time."""
@@ -152,7 +143,8 @@ class YieldPredictor:
         plt.ylabel("Change")
         plt.title("🌦️ Climate Trends Over Time")
         plt.legend()
-        plt.show()
+        
+        plt.savefig("plot 2.png")
 
 # Example Usage
 if __name__ == "__main__":
