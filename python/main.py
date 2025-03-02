@@ -31,12 +31,17 @@ class MarsData(BaseModel):
 class EarthData(BaseModel):
     crop_yield: int
 
+# Yield
+class YieldRequest(BaseModel):
+    year: int
+
 # In-memory database 
 fake_db = {}
 
 # Initialize a global counter for the Mars and Earth ID
 mars_id_counter = 1  
 earth_id_counter = 1
+year_id_counter = 1
 
 # CREATE - POST request to create Mars data
 @app.post("/mars/", response_model=MarsData)
@@ -126,4 +131,12 @@ async def get_climate_plot():
     predictor = YieldPredictor()
     img_base64 = predictor.plot_yield_trends()
     return JSONResponse(content={"image": f"data:image/png;base64,{img_base64}"})
+
+
+@app.post("/compute/")
+async def compute_yield_prediction(data: YieldRequest):
+    predictor = YieldPredictor()
+    prediction = predictor.predict_yield(data.year)
+    return {"year": data.year, "computed_value": prediction}
+
 

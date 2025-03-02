@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FastAPI Frontend</title>
     <script>
+        // Compute
+        async function computeYearYield() {
+            const year = parseInt(document.getElementById('year').value);
+
+            if (year < 2001 || year > 2100) {
+                alert("Please enter a valid year! (2001 - 2100)");
+                return;
+            }
+
+            const response = await fetch('http://127.0.0.1:8000/compute/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ year: year })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('output').innerText = `Year: ${data.year}, Yield: ${data.computed_value}`;
+            } else {
+                document.getElementById('output').innerText = "Error computing value.";
+            }
+        }
+
         // Function to fetch the yield trends graph
         async function getYieldPlot() {
             try {
@@ -142,8 +167,8 @@
 
     <h2>Get Yield Prediction for a specific year</h2>
     <input type="number" id="year" placeholder="Year" />
-    
-
+    <button onclick="computeYearYield()">Submit</button>
+    <pre id="output"></pre>
 
     <h2>Average Water Content</h2>
     <button onclick="getAverageWaterContent()">Calculate Average Water content</button>
