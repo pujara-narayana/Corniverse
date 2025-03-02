@@ -1,0 +1,46 @@
+[
+    {
+        "year": 2000,
+        "yield": 4
+    },
+    {
+        "year": 2010,
+        "yield": 4
+    },
+    {
+        "year": 2020,
+        "yield": 4
+    },
+    {
+        "year": 2030,
+        "yield": 4
+    },
+    {
+        "year": 2040,
+        "yield": 5
+    },
+    {
+        "year": 2050,
+        "yield": 6
+    },
+    {
+        "year": 2060,
+        "yield": 7
+    },
+    {
+        "year": 2070,
+        "yield": 8
+    },
+    {
+        "year": 2080,
+        "yield": 9
+    },
+    {
+        "year": 2090,
+        "yield": 10
+    },
+    {
+        "year": 2100,
+        "yield": 11
+    }
+]

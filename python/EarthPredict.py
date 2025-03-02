@@ -8,6 +8,7 @@ import base64
 import os
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import VarianceThreshold
+import json
 
 class YieldPredictor:
     def __init__(self, model_path="model.pkl", data_path="soil_data.csv"):
@@ -90,29 +91,14 @@ class YieldPredictor:
 
         return row
 
-    def predict_yield(self, year):
-        """Predict yield for a given year (2001 - 2100)."""
-        if not (2001 <= year <= 2100):
-            raise ValueError("Please enter a valid year between 2001 and 2100.")
-
-        filtered_row = self.get_filtered_row()
-        if filtered_row is None:
-            return None
-
-        adjusted_row = self.adjust_properties(filtered_row, year)
-        processed_input = self.preprocess_input(adjusted_row)
-
-        # Extreme randomness for bigger variations
-        random_factor = np.random.uniform(-5.0, 5.0)
-        prediction = self.model.predict(processed_input) + random_factor
-        
-        return int(round(prediction[0]))
-
     def plot_yield_trends(self):
         """Plot yield predictions from 2001 to 2100."""
         years = list(range(2001, 2101))
         yields = [self.predict_yield(year) for year in years]
-
+        yield_data = [{"year": y, "yield": yld} for y, yld in zip(years, yields)]
+        with open("yield_predictions.json", "w") as json_file:
+            json.dump(yield_data, json_file, indent=4)
+            
         plt.figure(figsize=(10, 5))
         plt.plot(years, yields, marker='o', linestyle='-', color='b', label="Predicted Yield")
         plt.axvline(x=2035, color='r', linestyle='--', label="Fertilizer Boosts")
@@ -146,7 +132,24 @@ class YieldPredictor:
         plt.legend()
         
         plt.savefig("plot 2.png")
+        
+    def predict_yield(self, year):
+        """Predict yield for a given year (2001 - 2100)."""
+        if not (2001 <= year <= 2100):
+            raise ValueError("Please enter a valid year between 2001 and 2100.")
 
+        filtered_row = self.get_filtered_row()
+        if filtered_row is None:
+            return None
+
+        adjusted_row = self.adjust_properties(filtered_row, year)
+        processed_input = self.preprocess_input(adjusted_row)
+
+        # Extreme randomness for bigger variations
+        random_factor = np.random.uniform(-5.0, 5.0)
+        prediction = self.model.predict(processed_input) + random_factor
+        
+        return int(round(prediction[0]))
 # Example Usage
 if __name__ == "__main__":
     predictor = YieldPredictor()

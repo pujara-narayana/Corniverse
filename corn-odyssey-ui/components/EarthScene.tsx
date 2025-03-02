@@ -24,7 +24,7 @@ function RotatingEarth() {
 export default function EarthScene() {
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
+      <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={1} />
         <Stars radius={100} depth={50} count={5000} factor={4} />

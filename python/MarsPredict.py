@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import VarianceThreshold
 import matplotlib.pyplot as plt
+import json
 
 class MarsYieldPredictor:
     def __init__(self, model_path="model.pkl", data_path="soil_data.csv"):
@@ -89,6 +90,18 @@ class MarsYieldPredictor:
         user_inputs = base_soil.to_dict()
         return self.predict_yield(user_inputs, year)
 
+    def predict_yeild_json(self):
+        """Predict yield for Mars from 2001 to 2100 and save to a JSON file."""
+        years = list(range(2000, 2101, 10))  # Generate every decade
+        yields = [self.predict_yield_yes(year) for year in years]  # Fix function call
+
+        yield_data = [{"year": y, "yield": yld} for y, yld in zip(years, yields)]
+        
+        with open("mars_yield_predictions.json", "w") as json_file:
+            json.dump(yield_data, json_file, indent=4)
+
+    print("✅ Mars yield predictions saved to `mars_yield_predictions.json`")
+
     def run(self):
         """Run the Mars yield predictor interactively."""
         base_soil = self.get_mars_base_soil()
@@ -103,6 +116,7 @@ class MarsYieldPredictor:
             return
 
         predicted_yield = self.predict_yield_yes(year)
+        self.predict_yeild_json()
         print(f"\n🚀 **Predicted Yield on Mars in {year}:** {predicted_yield} Mg/ha\n")
         return predicted_yield
 
@@ -111,7 +125,6 @@ class MarsYieldPredictor:
         years = list(range(2030, 2101))
         yields = [self.predict_yield_yes(year) for year in years]
 
-        import matplotlib.pyplot as plt
         plt.figure(figsize=(12, 6))
         plt.plot(years, yields, marker='o', color='b', linestyle='-', linewidth=2)
         plt.title("Mars Crop Yield Predictions (2030 - 2100)")

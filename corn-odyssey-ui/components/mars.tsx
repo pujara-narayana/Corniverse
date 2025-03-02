@@ -26,13 +26,51 @@ export default function Mars() {
 
   // Corn yield data
   const cornYieldData = [
-    { year: 2050, yield: 5 },
-    { year: 2060, yield: 32 },
-    { year: 2070, yield: 78 },
-    { year: 2080, yield: 120 },
-    { year: 2090, yield: 155 },
-    { year: 2100, yield: 190 },
-  ];
+    {
+        year: 2000,
+        yield: 4
+    },
+    {
+        year: 2010,
+        yield: 4
+    },
+    {
+        year: 2020,
+        yield: 4
+    },
+    {
+        year: 2030,
+        yield: 4
+    },
+    {
+        year: 2040,
+        yield: 5
+    },
+    {
+        year: 2050,
+        yield: 6
+    },
+    {
+        year: 2060,
+        yield: 7
+    },
+    {
+        year: 2070,
+        yield: 8
+    },
+    {
+        year: 2080,
+        yield: 9
+    },
+    {
+        year: 2090,
+        yield: 10
+    },
+    {
+        year: 2100,
+        yield: 11
+    }
+];
 
   // Mars colony data
   const colonyData = [
@@ -215,65 +253,68 @@ export default function Mars() {
               <div className="bg-black bg-opacity-50 p-6 rounded-xl border border-red-800 backdrop-blur-sm">
                 <div className="relative h-80 mb-8">
                   {/* Graph bars */}
-                  <svg className="w-full h-full" viewBox="0 0 1000 400">
-                    {/* X and Y axes */}
-                    <line x1="50" y1="350" x2="950" y2="350" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
-                    <line x1="50" y1="50" x2="50" y2="350" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
-                    
-                    {/* Y-axis labels */}
-                    <text x="30" y="350" fill="white" fontSize="14" textAnchor="end">0</text>
-                    <text x="30" y="280" fill="white" fontSize="14" textAnchor="end">50</text>
-                    <text x="30" y="210" fill="white" fontSize="14" textAnchor="end">100</text>
-                    <text x="30" y="140" fill="white" fontSize="14" textAnchor="end">150</text>
-                    <text x="30" y="70" fill="white" fontSize="14" textAnchor="end">200</text>
-                    
-                    {/* Bars */}
-                    {cornYieldData.map((data, index) => {
-                      const barHeight = data.yield * 1.5;
-                      return (
-                        <g key={index}>
-                          <rect 
-                            x={110 + index * 150} 
-                            y={350 - barHeight}
-                            width="80" 
-                            height={barHeight}
-                            fill="url(#redGradient)"
-                            rx="4"
-                          />
-                          <text 
-                            x={150 + index * 150} 
-                            y="380" 
-                            fill="white" 
-                            fontSize="14" 
-                            textAnchor="middle"
-                          >
-                            {data.year}
-                          </text>
-                          <text 
-                            x={150 + index * 150} 
-                            y={340 - barHeight} 
-                            fill="white" 
-                            fontSize="14" 
-                            textAnchor="middle"
-                          >
-                            {data.yield}
-                          </text>
-                        </g>
-                      );
-                    })}
-                    
-                    {/* Gradient definition */}
-                    <defs>
-                      <linearGradient id="redGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#e53e3e" />
-                        <stop offset="100%" stopColor="#742a2a" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
+                  <svg className="w-full h-full" viewBox="0 0 1200 500">
+  {/* Axes */}
+  <line x1="50" y1="450" x2="1150" y2="450" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
+  <line x1="50" y1="50" x2="50" y2="450" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
+
+  {/* Y-axis labels with correct scaling */}
+  {[0, 2, 4, 6, 8, 10, 12].map((val) => (
+    <text key={val} x="30" y={450 - val * 35} fill="white" fontSize="14" textAnchor="end">
+      {val}
+    </text>
+  ))}
+
+  {/* Bars with adjusted width and spacing */}
+  {cornYieldData.map((data, index) => {
+    const barHeight = data.yield * 35; // Adjusted scaling for better clarity
+    return (
+      <g key={index}>
+        <rect 
+          x={80 + index * 90}  // Adjusted spacing for better alignment
+          y={450 - barHeight} 
+          width="70"  // Wider bars for better visibility
+          height={barHeight} 
+          fill="url(#redGradient)" 
+          rx="4" 
+        />
+        {/* Year Labels */}
+        <text 
+          x={115 + index * 90} 
+          y="470"  // Below bars
+          fill="white" 
+          fontSize="16" 
+          textAnchor="middle"
+        >
+          {data.year}
+        </text>
+        {/* Yield Value Labels */}
+        <text 
+          x={115 + index * 90} 
+          y={440 - barHeight} 
+          fill="white" 
+          fontSize="16" 
+          textAnchor="middle"
+        >
+          {data.yield}
+        </text>
+      </g>
+    );
+  })}
+
+  {/* Gradient for futuristic look */}
+  <defs>
+    <linearGradient id="redGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stopColor="#e53e3e" />
+      <stop offset="100%" stopColor="#742a2a" />
+    </linearGradient>
+  </defs>
+</svg>
+
                 </div>
                 
                 <div className="text-center">
-                  <p className="text-xl font-semibold mb-2">Bushels per Acre</p>
+                  <p className="text-xl font-semibold mb-2">Mg/ha</p>
                   <p className="text-gray-300">Projected growth in Martian corn yield from first successful harvest</p>
                 </div>
               </div>

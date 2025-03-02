@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import cornYieldDataJSON from '../../python/yield_predictions.json' assert { type: "json" };
+
 
 // Import Earth scene with SSR disabled
 const EarthScene = dynamic(() => import("./EarthScene"), {
@@ -25,13 +27,407 @@ export default function Earth() {
   const titleScale = 1 + Math.max(0, Math.min(0.3, scrollY / 1000));
 
   const cornYieldData = [
-    { year: 2023, yield: 177 },
-    { year: 2024, yield: 182 },
-    { year: 2025, yield: 180 },
-    { year: 2050, yield: 210 },
-    { year: 2075, yield: 240 },
-    { year: 2100, yield: 275 },
-  ];
+    {
+        year: 2001,
+        yield: 12
+    },
+    {
+        year: 2002,
+        yield: 13
+    },
+    {
+        year: 2003,
+        yield: 18
+    },
+    {
+        year: 2004,
+        yield: 13
+    },
+    {
+        year: 2005,
+        yield: 12
+    },
+    {
+        year: 2006,
+        yield: 9
+    },
+    {
+        year: 2007,
+        yield: 16
+    },
+    {
+        year: 2008,
+        yield: 17
+    },
+    {
+        year: 2009,
+        yield: 13
+    },
+    {
+        year: 2010,
+        yield: 10
+    },
+    {
+        year: 2011,
+        yield: 18
+    },
+    {
+        year: 2012,
+        yield: 12
+    },
+    {
+        year: 2013,
+        yield: 12
+    },
+    {
+        year: 2014,
+        yield: 12
+    },
+    {
+        year: 2015,
+        yield: 14
+    },
+    {
+        year: 2016,
+        yield: 16
+    },
+    {
+        year: 2017,
+        yield: 11
+    },
+    {
+        year: 2018,
+        yield: 15
+    },
+    {
+        year: 2019,
+        yield: 17
+    },
+    {
+        year: 2020,
+        yield: 14
+    },
+    {
+        year: 2021,
+        yield: 18
+    },
+    {
+        year: 2022,
+        yield: 11
+    },
+    {
+        year: 2023,
+        yield: 13
+    },
+    {
+        year: 2024,
+        yield: 17
+    },
+    {
+        year: 2025,
+        yield: 14
+    },
+    {
+        year: 2026,
+        yield: 17
+    },
+    {
+        year: 2027,
+        yield: 9
+    },
+    {
+        year: 2028,
+        yield: 17
+    },
+    {
+        year: 2029,
+        yield: 12
+    },
+    {
+        year: 2030,
+        yield: 12
+    },
+    {
+        year: 2031,
+        yield: 9
+    },
+    {
+        year: 2032,
+        yield: 11
+    },
+    {
+        year: 2033,
+        yield: 17
+    },
+    {
+        year: 2034,
+        yield: 16
+    },
+    {
+        year: 2035,
+        yield: 10
+    },
+    {
+        year: 2036,
+        yield: 9
+    },
+    {
+        year: 2037,
+        yield: 18
+    },
+    {
+        year: 2038,
+        yield: 15
+    },
+    {
+        year: 2039,
+        yield: 17
+    },
+    {
+        year: 2040,
+        yield: 16
+    },
+    {
+        year: 2041,
+        yield: 11
+    },
+    {
+        year: 2042,
+        yield: 11
+    },
+    {
+        year: 2043,
+        yield: 12
+    },
+    {
+        year: 2044,
+        yield: 15
+    },
+    {
+        year: 2045,
+        yield: 12
+    },
+    {
+        year: 2046,
+        yield: 15
+    },
+    {
+        year: 2047,
+        yield: 11
+    },
+    {
+        year: 2048,
+        yield: 10
+    },
+    {
+        year: 2049,
+        yield: 9
+    },
+    {
+        year: 2050,
+        yield: 16
+    },
+    {
+        year: 2051,
+        yield: 18
+    },
+    {
+        year: 2052,
+        yield: 11
+    },
+    {
+        year: 2053,
+        yield: 12
+    },
+    {
+        year: 2054,
+        yield: 9
+    },
+    {
+        year: 2055,
+        yield: 14
+    },
+    {
+        year: 2056,
+        yield: 18
+    },
+    {
+        year: 2057,
+        yield: 13
+    },
+    {
+        year: 2058,
+        yield: 11
+    },
+    {
+        year: 2059,
+        yield: 14
+    },
+    {
+        year: 2060,
+        yield: 11
+    },
+    {
+        year: 2061,
+        yield: 11
+    },
+    {
+        year: 2062,
+        yield: 12
+    },
+    {
+        year: 2063,
+        yield: 13
+    },
+    {
+        year: 2064,
+        yield: 11
+    },
+    {
+        year: 2065,
+        yield: 16
+    },
+    {
+        year: 2066,
+        yield: 10
+    },
+    {
+        year: 2067,
+        yield: 15
+    },
+    {
+        year: 2068,
+        yield: 9
+    },
+    {
+        year: 2069,
+        yield: 18
+    },
+    {
+        year: 2070,
+        yield: 14
+    },
+    {
+        year: 2071,
+        yield: 15
+    },
+    {
+        year: 2072,
+        yield: 18
+    },
+    {
+        year: 2073,
+        yield: 13
+    },
+    {
+        year: 2074,
+        yield: 16
+    },
+    {
+        year: 2075,
+        yield: 10
+    },
+    {
+        year: 2076,
+        yield: 16
+    },
+    {
+        year: 2077,
+        yield: 12
+    },
+    {
+        year: 2078,
+        yield: 12
+    },
+    {
+        year: 2079,
+        yield: 14
+    },
+    {
+        year: 2080,
+        yield: 11
+    },
+    {
+        year: 2081,
+        yield: 10
+    },
+    {
+        year: 2082,
+        yield: 13
+    },
+    {
+        year: 2083,
+        yield: 10
+    },
+    {
+        year: 2084,
+        yield: 11
+    },
+    {
+        year: 2085,
+        yield: 18
+    },
+    {
+        year: 2086,
+        yield: 18
+    },
+    {
+        year: 2087,
+        yield: 18
+    },
+    {
+        year: 2088,
+        yield: 11
+    },
+    {
+        year: 2089,
+        yield: 18
+    },
+    {
+        year: 2090,
+        yield: 15
+    },
+    {
+        year: 2091,
+        yield: 15
+    },
+    {
+        year: 2092,
+        yield: 9
+    },
+    {
+        year: 2093,
+        yield: 9
+    },
+    {
+        year: 2094,
+        yield: 18
+    },
+    {
+        year: 2095,
+        yield: 15
+    },
+    {
+        year: 2096,
+        yield: 11
+    },
+    {
+        year: 2097,
+        yield: 10
+    },
+    {
+        year: 2098,
+        yield: 15
+    },
+    {
+        year: 2099,
+        yield: 14
+    },
+    {
+        year: 2100,
+        yield: 9
+    }
+];
   // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
@@ -81,7 +477,38 @@ export default function Earth() {
       setLoading(false);
     }
   }
+// SVG chart dimensions
+const chartWidth = 1000;
+const chartHeight = 400;
+const xPadding = 50;
+const yPadding = 50;
+const scaleFactor = 15; // vertical scale for yield
 
+// X scale function
+const xScale = (index: number) =>
+  xPadding +
+  (index * (chartWidth - 2 * xPadding)) / (cornYieldData.length - 1);
+
+// Y scale function (higher yield => lower y)
+const yScale = (val: number) =>
+  chartHeight - yPadding - val * scaleFactor;
+
+// Build polyline for all data points
+const polylinePoints = cornYieldData
+  .map((d, i) => `${xScale(i)},${yScale(d.yield)}`)
+  .join(" ");
+
+// Simple trendline from first to last
+const firstYield = cornYieldData[0].yield;
+const lastYield = cornYieldData[cornYieldData.length - 1].yield;
+const slope = (lastYield - firstYield) / (cornYieldData.length - 1);
+const trendPoints = cornYieldData
+  .map((_, i) => {
+    const trendY = firstYield + slope * i;
+    return `${xScale(i)},${yScale(trendY)}`;
+  })
+  .join(" ");
+  
   return (
     <div className="relative w-full min-h-screen bg-black text-white overflow-hidden">
       {/* Fixed background - 3D Earth */}
@@ -151,112 +578,138 @@ export default function Earth() {
           </div>
           
           {/* Scroll indicator */}
-          <div 
-            className="absolute bottom-10 flex flex-col items-center animate-pulse" 
+          <div
+            className="absolute bottom-10 flex flex-col items-center animate-pulse"
             style={{ opacity: Math.max(0, 1 - scrollY / 300) }}
           >
             <p className="mb-2">Scroll to explore</p>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M7 13l5 5 5-5M7 7l5 5 5-5"/>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M7 13l5 5 5-5M7 7l5 5 5-5" />
             </svg>
           </div>
         </section>
-        
-        {/* Corn Yield section with cool graph */}
+
+        {/* Chart Section */}
         <section className="min-h-screen py-20 px-4 relative">
-          <div 
+          <div
             className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-900/30 to-transparent opacity-70 z-0"
-            style={{ 
-              transform: `translateY(${(scrollY - 500) * 0.1}px)` 
-            }}
+            style={{ transform: `translateY(${(scrollY - 500) * 0.1}px)` }}
           ></div>
-          
+
           <div className="relative z-10 max-w-6xl mx-auto">
-            <h2 
+            <h2
               className="text-5xl font-bold text-center mb-16 text-blue-100"
-              style={{ 
+              style={{
                 transform: `translateY(${Math.max(0, (scrollY - 600) * 0.2)}px)`,
-                opacity: Math.min(1, Math.max(0, (scrollY - 500) / 300))
+                opacity: Math.min(1, Math.max(0, (scrollY - 500) / 300)),
               }}
             >
               Corn Yield Projections
             </h2>
-            
-            {/* Data visualization */}
-            <div 
+
+            <div
               className="mb-16"
-              style={{ 
+              style={{
                 opacity: Math.min(1, Math.max(0, (scrollY - 600) / 400)),
-                transform: `translateY(${Math.max(0, 100 - (scrollY - 600) * 0.2)}px)`
+                transform: `translateY(${Math.max(
+                  0,
+                  100 - (scrollY - 600) * 0.2
+                )}px)`,
               }}
             >
               <div className="bg-black bg-opacity-50 p-6 rounded-xl border border-blue-800 backdrop-blur-sm">
                 <div className="relative h-80 mb-8">
-                  {/* Graph lines and points */}
-                  <svg className="w-full h-full" viewBox="0 0 1000 400">
-                    {/* X and Y axes */}
-                    <line x1="50" y1="350" x2="950" y2="350" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
-                    <line x1="50" y1="50" x2="50" y2="350" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
-                    
-                    {/* Y-axis labels */}
-                    <text x="30" y="350" fill="white" fontSize="14" textAnchor="end">0</text>
-                    <text x="30" y="280" fill="white" fontSize="14" textAnchor="end">100</text>
-                    <text x="30" y="210" fill="white" fontSize="14" textAnchor="end">200</text>
-                    <text x="30" y="140" fill="white" fontSize="14" textAnchor="end">300</text>
-                    <text x="30" y="70" fill="white" fontSize="14" textAnchor="end">400</text>
-                    
-                    {/* Line graph */}
-                    <polyline 
-                      points={`
-                        ${50 + 0 * 150},${350 - cornYieldData[0].yield * 0.8}
-                        ${50 + 1 * 150},${350 - cornYieldData[1].yield * 0.8}
-                        ${50 + 2 * 150},${350 - cornYieldData[2].yield * 0.8}
-                        ${50 + 3 * 150},${350 - cornYieldData[3].yield * 0.8}
-                        ${50 + 4 * 150},${350 - cornYieldData[4].yield * 0.8}
-                        ${50 + 5 * 150},${350 - cornYieldData[5].yield * 0.8}
-                      `}
+                  <svg
+                    className="w-full h-full"
+                    viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+                  >
+                    {/* Axes */}
+                    <line
+                      x1={xPadding}
+                      y1={chartHeight - yPadding}
+                      x2={chartWidth - xPadding}
+                      y2={chartHeight - yPadding}
+                      stroke="rgba(255,255,255,0.5)"
+                      strokeWidth="2"
+                    />
+                    <line
+                      x1={xPadding}
+                      y1={yPadding}
+                      x2={xPadding}
+                      y2={chartHeight - yPadding}
+                      stroke="rgba(255,255,255,0.5)"
+                      strokeWidth="2"
+                    />
+
+                    {/* Decade Labels on X-Axis */}
+                    {cornYieldData.map((d, i) => {
+                      const cx = xScale(i);
+                      if (d.year % 10 === 0) {
+                        return (
+                          <text
+                            key={d.year}
+                            x={cx}
+                            y={chartHeight - (yPadding - 10)}
+                            fill="white"
+                            fontSize="14"
+                            textAnchor="middle"
+                          >
+                            {d.year}
+                          </text>
+                        );
+                      }
+                      return null;
+                    })}
+
+                    {/* Original Polyline (all data) */}
+                    <polyline
                       fill="none"
                       stroke="#4299e1"
                       strokeWidth="3"
                       strokeLinecap="round"
                       strokeLinejoin="round"
+                      points={polylinePoints}
                     />
+
                     
-                    {/* Data points */}
-                    {cornYieldData.map((data, index) => (
-                      <g key={index}>
-                        <circle 
-                          cx={50 + index * 150} 
-                          cy={350 - data.yield * 0.8} 
-                          r="8" 
-                          fill="#4299e1" 
-                        />
-                        <text 
-                          x={50 + index * 150} 
-                          y="380" 
-                          fill="white" 
-                          fontSize="14" 
-                          textAnchor="middle"
-                        >
-                          {data.year}
-                        </text>
-                        <text 
-                          x={50 + index * 150} 
-                          y={340 - data.yield * 0.8} 
-                          fill="white" 
-                          fontSize="14" 
-                          textAnchor="middle"
-                        >
-                          {data.yield}
-                        </text>
-                      </g>
-                    ))}
+
+                    {/* All Data Points */}
+                    {cornYieldData.map((entry, i) => {
+                      const cx = xScale(i);
+                      const cy = yScale(entry.yield);
+                      return (
+                        <g key={entry.year}>
+                          <circle cx={cx} cy={cy} r="4" fill="#4299e1" />
+                          {/* Show yield above circle */}
+                          <text
+                            x={cx}
+                            y={cy - 10}
+                            fill="white"
+                            fontSize="12"
+                            textAnchor="middle"
+                          >
+                            
+                          </text>
+                        </g>
+                      );
+                    })}
                   </svg>
                 </div>
-                
+
                 <div className="text-center">
-                  <p className="text-xl font-semibold mb-2">Bushels per Acre</p>
-                  <p className="text-gray-300">Projected increase in corn yield through 2100</p>
+                  <p className="text-xl font-semibold mb-2">Mg/ha</p>
+                  <p className="text-gray-300">
+                    Projected increase in corn yield through 2100
+                  </p>
                 </div>
               </div>
             </div>
@@ -279,7 +732,7 @@ export default function Earth() {
                 >
                   <h3 className="text-2xl font-bold mb-2">{data.year}</h3>
                   <div className="text-blue-300 text-5xl font-bold">{data.yield}</div>
-                  <p className="text-gray-400 mt-2">bushels/acre</p>
+                  <p className="text-gray-400 mt-2">Mg/ha</p>
                 </div>
               ))}
             </div>
