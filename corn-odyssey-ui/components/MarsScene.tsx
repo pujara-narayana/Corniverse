@@ -1,0 +1,42 @@
+"use client";
+
+import { useRef } from "react";
+import * as THREE from "three";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useGLTF, OrbitControls, Stars } from "@react-three/drei";
+
+// Rotating Mars Component
+function RotatingMars() {
+  const mars = useGLTF("/models/mars.glb");
+  const ref = useRef<THREE.Group>(null);
+
+  useFrame(() => {
+    if (ref.current) {
+      // Simple rotation around the y-axis
+      ref.current.rotation.y += 0.003; // Mars rotates a bit slower than Earth
+    }
+  });
+
+  return <primitive ref={ref} object={mars.scene} scale={2} position={[0, 0, 0]} />;
+}
+
+// Main Mars Scene Component
+export default function MarsScene() {
+  return (
+    <div style={{ width: "100%", height: "100%" }}>
+      <Canvas camera={{ position: [0, 0, 60], fov: 45 }}>
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} color="#ff7e5f" intensity={1} />
+        <Stars radius={100} depth={50} count={5000} factor={4} />
+        <RotatingMars />
+        <OrbitControls 
+          enableZoom={false}
+          enablePan={false}
+          rotateSpeed={0.4}
+          autoRotate
+          autoRotateSpeed={0.5}
+        />
+      </Canvas>
+    </div>
+  );
+}
