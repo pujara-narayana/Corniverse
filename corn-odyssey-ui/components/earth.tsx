@@ -14,19 +14,14 @@ const EarthScene = dynamic(() => import("./EarthScene"), {
   ),
 });
 
-// Dynamic import for the CornField component to avoid SSR issues
-const CornField = dynamic(() => import("./CornField"), {
-  ssr: false,
-  loading: () => <div className="text-white text-center">Loading corn field...</div>,
-});
+
 
 export default function Earth() {
   const [scrollY, setScrollY] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [cornCount, setCornCount] = useState(5); // Default count
-  const [showCornField, setShowCornField] = useState(false);
-  
-  // Corn yield data
+  const headerOpacity = Math.max(0, Math.min(1, 1 - scrollY / 500));
+  const titleScale = 1 + Math.max(0, Math.min(0.3, scrollY / 1000));
   const cornYieldData = [
     { year: 2023, yield: 177 },
     { year: 2024, yield: 182 },
@@ -35,7 +30,6 @@ export default function Earth() {
     { year: 2075, yield: 240 },
     { year: 2100, yield: 275 },
   ];
-
   // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
@@ -63,14 +57,7 @@ export default function Earth() {
     }
   };
 
-  // Toggle corn field visibility
-  const toggleCornField = () => {
-    setShowCornField(!showCornField);
-  };
-  
-  // Calculate opacity for fade effects
-  const headerOpacity = Math.max(0, Math.min(1, 1 - scrollY / 500));
-  const titleScale = 1 + Math.max(0, Math.min(0.3, scrollY / 1000));
+
   
   return (
     <div className="relative w-full min-h-screen bg-black text-white overflow-hidden">
@@ -80,23 +67,7 @@ export default function Earth() {
       </div>
       
       {/* Corn Field Overlay when active */}
-      {showCornField && (
-        <div className="fixed inset-0 z-30 bg-black bg-opacity-80 flex flex-col items-center justify-center">
-          <div className="w-full h-[60vh]">
-            <CornField count={cornCount} planetType="earth" />
-          </div>
-          <div className="bg-black bg-opacity-70 p-4 rounded-lg mt-4 text-center">
-            <h3 className="text-xl font-bold mb-2">Earth Corn Simulation</h3>
-            <p className="mb-4">Displaying {cornCount} corn plants</p>
-            <button 
-              onClick={toggleCornField}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Close Simulation
-            </button>
-          </div>
-        </div>
-      )}
+      
       
       {/* Subtle gradient overlay to improve text readability */}
       <div 
@@ -149,7 +120,7 @@ export default function Earth() {
                   />
                 </label>
                 <button 
-                  onClick={toggleCornField}
+                  onClick={() => setCornCount(5)}
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
                 >
                   Display Corn
