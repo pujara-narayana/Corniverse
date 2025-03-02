@@ -19,8 +19,11 @@ const MarsScene = dynamic(() => import("./MarsScene"), {
 export default function Mars() {
   const [scrollY, setScrollY] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [year, setYear] = useState(2050); // Default year
   const [cornCount, setCornCount] = useState(3); // Default count (lower for Mars initially)
-  
+  const [predictedYield, setPredictedYield] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+
   // Corn yield data
   const cornYieldData = [
     { year: 2050, yield: 5 },
@@ -58,15 +61,34 @@ export default function Mars() {
     };
   }, []);
   
-  // Handle corn count input
-  const handleCornCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
-    if (!isNaN(value) && value >= 0) {
-      setCornCount(value);
+    if (!isNaN(value) && value >= 2001 && value <= 2100) {
+      setYear(value);
     }
   };
 
+  async function fetchPrediction(year: number) {
+    try {
+      setLoading(true);
+      const response = await fetch(`http://127.0.0.1:8000/marsPredict/${year}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setPredictedYield(data.predicted_yield);
+    } catch (error) {
+      console.error("Error fetching prediction:", error);
+      setPredictedYield(null); // Reset value if error occurs
+    } finally {
+      setLoading(false);
+    }
+  }
   
   // Calculate opacity for fade effects
   const headerOpacity = Math.max(0, Math.min(1, 1 - scrollY / 500));
@@ -118,26 +140,35 @@ export default function Mars() {
             </p>
             
             {/* Corn display controls with Mars styling */}
-            <div className="mt-6 p-4 bg-red-900 bg-opacity-50 rounded-lg">
-              <h3 className="text-lg font-medium mb-2">Mars Corn Simulator</h3>
-              <div className="flex items-center justify-center space-x-4">
+            <div className="mt-6 p-4 bg-blue-900 bg-opacity-50 rounded-lg">
+              <h3 className="text-lg font-medium mb-2">Corn Yield Predictor</h3>
+              <div className="flex flex-col items-center space-y-4">
                 <label className="flex items-center">
-                  <span className="mr-2">Corn Count:</span>
+                  <span className="mr-2">Enter Year:</span>
                   <input 
                     type="number" 
-                    min="0" 
-                    value={cornCount}
-                    onChange={handleCornCountChange}
-                    className="bg-red-800 text-white px-3 py-1 rounded w-24 text-center"
+                    min="2001" 
+                    max="2100"
+                    value={year}
+                    onChange={handleYearChange}
+                    className="bg-blue-800 text-white px-3 py-1 rounded w-24 text-center"
                   />
                 </label>
                 <button 
-                  onClick={() => setCornCount(5)}
-                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+                  onClick={() => fetchPrediction(year)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+                  disabled={loading}
                 >
-                  Display Corn
+                  {loading ? "Loading..." : "Get Prediction"}
                 </button>
               </div>
+
+              {/* Display the predicted yield */}
+              {predictedYield !== null && (
+                <div className="mt-4 text-xl font-bold text-white">
+                  Predicted Yield for {year}: <span className="text-yellow-300">{predictedYield} megagrams / hectare</span>
+                </div>
+              )}
             </div>
           </div>
           
