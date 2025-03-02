@@ -1,0 +1,11 @@
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+fastapi
+pydantic
+uvicorn
+json
+random
+statistics
