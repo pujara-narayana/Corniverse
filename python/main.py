@@ -56,3 +56,7 @@ def predict_yield(year: int):
         return {"year": year, "predicted_yield": prediction}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
