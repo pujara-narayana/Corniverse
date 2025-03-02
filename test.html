@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Frontend</title>
+    <script>
+        // Function to create new Mars data
+        async function createMarsData() {
+            const water = parseFloat(document.getElementById('water').value);
+            const soilComposition = {
+                "CO2": parseInt(document.getElementById('co2').value),
+                "O2": parseInt(document.getElementById('o2').value),
+            };
+
+            const response = await fetch('http://127.0.0.1:8000/mars/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    water: water,
+                    soil_composition: soilComposition,
+                })
+            });
+
+            const data = await response.json();
+            console.log('Created Mars Data:', data);
+            alert('Mars Data Created');
+        }
+
+        // Function to fetch Mars data by ID
+        async function getMarsData() {
+            const marsId = document.getElementById('marsId').value;
+
+            const response = await fetch(`http://127.0.0.1:8000/mars/${marsId}`);
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('marsData').innerText = JSON.stringify(data, null, 2);
+            } else {
+                alert('Mars Data not found');
+            }
+        }
+
+        // Function to update Mars data
+        async function updateMarsData() {
+            const marsId = document.getElementById('updateMarsId').value;
+            const water = parseFloat(document.getElementById('updateWater').value);
+            const soilComposition = {
+                "CO2": parseInt(document.getElementById('updateCO2').value),
+                "O2": parseInt(document.getElementById('updateO2').value),
+            };
+
+            const response = await fetch(`http://127.0.0.1:8000/mars/${marsId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    water: water,
+                    soil_composition: soilComposition,
+                })
+            });
+
+            const data = await response.json();
+            console.log('Updated Mars Data:', data);
+            alert('Mars Data Updated');
+        }
+
+        // Function to delete Mars data
+        async function deleteMarsData() {
+            const marsId = document.getElementById('deleteMarsId').value;
+
+            const response = await fetch(`http://127.0.0.1:8000/mars/${marsId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Deleted Mars Data:', data);
+                alert('Mars Data Deleted');
+            } else {
+                alert('Mars Data not found');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>FastAPI with Frontend Example</h1>
+
+    <h2>Create Mars Data</h2>
+    <input type="number" id="water" placeholder="Water Amount" />
+    <input type="number" id="co2" placeholder="CO2" />
+    <input type="number" id="o2" placeholder="O2" />
+    <button onclick="createMarsData()">Create Mars Data</button>
+
+    <h2>Get Mars Data by ID</h2>
+    <input type="number" id="marsId" placeholder="Mars ID" />
+    <button onclick="getMarsData()">Get Mars Data</button>
+    <pre id="marsData"></pre>
+
+    <h2>Update Mars Data</h2>
+    <input type="number" id="updateMarsId" placeholder="Mars ID" />
+    <input type="number" id="updateWater" placeholder="New Water Amount" />
+    <input type="number" id="updateCO2" placeholder="New CO2" />
+    <input type="number" id="updateO2" placeholder="New O2" />
+    <button onclick="updateMarsData()">Update Mars Data</button>
+
+    <h2>Delete Mars Data</h2>
+    <input type="number" id="deleteMarsId" placeholder="Mars ID" />
+    <button onclick="deleteMarsData()">Delete Mars Data</button>
+</body>
+</html>

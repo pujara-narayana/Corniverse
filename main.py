@@ -1,18 +1,26 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware  
 from typing import Dict
 
 app = FastAPI()
+
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for now, modify as needed
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 # Define the MarsData model
 class MarsData(BaseModel):
     water: float  # Water amount in milliliters
     soil_composition: Dict[str, int]  # Dictionary of gases (name -> amount)
-    year: int  # Year of the data
 
 # Earth
 class EarthData(BaseModel):
-    year: int 
     crop_yield: int
 
 # In-memory database (for simplicity)
@@ -84,3 +92,4 @@ async def delete_earth_data(earth_id: int):
         raise HTTPException(status_code=404, detail="Earth data not found")
     deleted_data = fake_db.pop(earth_id)
     return deleted_data
+
