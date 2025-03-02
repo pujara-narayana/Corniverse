@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
+
 export default function AboutPage() {
   const [scrollY, setScrollY] = useState(0);
   const [stars, setStars] = useState<Array<{ id: number; x: number; y: number; size: number; delay: number }>>([]);
@@ -141,13 +142,13 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
               {
-                title: "Data Collecting",
-                description: "We collected data from all the authentic sources such as pds.nasa.gov, weather.gov and nass.usda.gov ",
+                title: "Data Training",
+                description: "Trained the data we collected using RandomForestRegressor model.",
                 icon: "🧠"
               },
               {
-                title: "Data Training",
-                description: "Trained the data we collected using RandomForestRegressor model.",
+                title: "CornHusker AI Chatbot",
+                description: "Created an AI Chatbot - CornHusker, using DeepSeek's API Key.",
                 icon: "🤖"
               },
               {

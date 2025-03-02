@@ -5,6 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import "..app//cursor-styles.css";
 
+
 // Import SpaceScene with SSR disabled
 const SpaceScene = dynamic(() => import("@/components/SpaceScene"), {
   ssr: false,

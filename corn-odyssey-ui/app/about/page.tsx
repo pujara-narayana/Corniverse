@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 
 // Import AboutPage with SSR disabled to prevent hydration issues
@@ -12,6 +13,25 @@ const AboutPage = dynamic(() => import("@/components/AboutPage"), {
   ),
 });
 
+// Import AI Chatbot component with dynamic import
+const AICornHusker = dynamic(() => import("@/components/AICornHusker"), {
+  ssr: false,
+});
+
 export default function About() {
-  return <AboutPage />;
+  // Use state to ensure components are rendered client-side
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <>
+      <AboutPage />
+      <AICornHusker theme="space" />
+    </>
+  );
 }

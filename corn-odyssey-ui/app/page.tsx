@@ -2,7 +2,13 @@
 import { useState, useEffect, useRef } from "react";
 import SpaceScene from "@/components/SpaceScene";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import "../app/cursor-styles.css"; // Adjusted path
+
+// Import AI Chatbot component with dynamic import
+const AICornHusker = dynamic(() => import("@/components/AICornHusker"), {
+  ssr: false,
+});
 
 export default function Home() {
   const [immersive, setImmersive] = useState(false);
@@ -10,7 +16,13 @@ export default function Home() {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isClicking, setIsClicking] = useState(false);
   const [stars, setStars] = useState<Array<{ id: number; x: number; y: number; size: number; delay: number }>>([]);
+  const [mounted, setMounted] = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
+  
+  // Ensure client-side rendering
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   // Generate stars for background
   useEffect(() => {
@@ -85,6 +97,8 @@ export default function Home() {
     });
   };
   
+  if (!mounted) return null;
+  
   return (
     <main className="rocket-cursor relative w-full">
       {/* Custom cursor */}
@@ -93,6 +107,9 @@ export default function Home() {
         className={`custom-cursor ${isClicking ? 'clicking' : ''}`}
         style={{ left: cursorPosition.x, top: cursorPosition.y }}
       ></div>
+      
+      {/* AI Chatbot */}
+      <AICornHusker theme="space" />
       
       {/* Stars background */}
       {stars.map(star => (
