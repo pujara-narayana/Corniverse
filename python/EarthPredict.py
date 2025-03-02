@@ -4,35 +4,61 @@ import numpy as np
 import random
 import io
 import matplotlib.pyplot as plt
-import base64
+from sklearn.preprocessing import StandardScaler
+from sklearn.feature_selection import VarianceThreshold
 
 class YieldPredictor:
     def __init__(self, model_path="model.pkl", data_path="soil_data.csv"):
-        """Initialize the model and load the trained model."""
+        """Initialize the model and load preprocessing settings."""
         self.model_path = model_path
         self.data_path = data_path
         self.model = self.load_model()
         self.soil_data = pd.read_csv(self.data_path)
+
+        # Load StandardScaler & VarianceThreshold (Ensure Consistency)
+        self.scaler = StandardScaler()
+        self.variance_threshold = VarianceThreshold(threshold=0.01)
+        self.prepare_scaler_and_feature_selector()
 
     def load_model(self):
         """Load the trained model from a pickle file."""
         try:
             with open(self.model_path, 'rb') as f:
                 model = pickle.load(f)
-            print("Model loaded successfully.")
+            print("🌍 Model loaded successfully.")
             return model
         except FileNotFoundError:
             print("Error: Model file not found. Please train the model first.")
             return None
+
+    def prepare_scaler_and_feature_selector(self):
+        """Fit the scaler and variance threshold on the dataset."""
+        self.processed_soil_data = self.soil_data.drop(
+            ['Year', 'Site-yr', 'Site-no', 'Site', 'Soil', 'prevCrop', 'Till',
+             'Texture', 'Treatment', 'Treat-no', 'GY Mg'], axis=1
+        ).replace("T", 0)
+
+        scaled_data = self.scaler.fit_transform(self.processed_soil_data)
+        self.variance_threshold.fit(scaled_data)
+        self.selected_features = self.processed_soil_data.columns[self.variance_threshold.get_support()]
+
+    def preprocess_input(self, input_row):
+        """Apply scaling and feature selection to the input row before prediction."""
+        df = pd.DataFrame([input_row])
+        df = df.reindex(columns=self.selected_features, fill_value=0)  # Ensure Feature Consistency
+        scaled_input = self.scaler.transform(df)
+        filtered_input = self.variance_threshold.transform(scaled_input)
+
+        return pd.DataFrame(filtered_input, columns=self.selected_features)
 
     def get_filtered_row(self):
         """Retrieve the first row where 'GY Mg' == 13.66."""
         filtered_rows = self.soil_data[self.soil_data['GY Mg'] == 13.66]
         if not filtered_rows.empty:
             return filtered_rows.iloc[0].drop(
-                ['Year', 'Site-yr', 'Site-no', 'Site', 'Soil', 'prevCrop', 
+                ['Year', 'Site-yr', 'Site-no', 'Site', 'Soil', 'prevCrop',
                  'Till', 'Texture', 'Treatment', 'Treat-no', 'GY Mg']
-            ).copy()  # Use .copy() to avoid modification warnings
+            ).copy()  # Avoid modification warnings
         else:
             print("No matching row found.")
             return None
@@ -48,12 +74,12 @@ class YieldPredictor:
             row.at['Normal H (F)'] += decades_passed * temp_increase_per_decade
             row.at['Normal L (F)'] += decades_passed * temp_increase_per_decade
 
-        # Soil depletion
+        # Soil depletion over time
         for col in ['SOM 0-4', 'SOM 4-8', 'SOM 0-8', 'SOM 8-16']:
             if col in row:
                 row.at[col] -= decades_passed * random.uniform(0.3, 0.6)
 
-        # Fertilizer Application (Major Boosts in Some Years)
+        # Fertilizer Application in Certain Years
         if year in [2035, 2045, 2055, 2065, 2075, 2085, 2095]:
             print(f"💡 Major Fertilizer Boost in Year {year}!")
             for col in ['NO3-12S', 'NO3-24S', 'Bray-P 0-4', 'K 0-4']:
@@ -72,14 +98,11 @@ class YieldPredictor:
             return None
 
         adjusted_row = self.adjust_properties(filtered_row, year)
-        df = pd.DataFrame([adjusted_row])
-
-        df.fillna(df.mean(), inplace=True)
-        df.fillna(0, inplace=True)
+        processed_input = self.preprocess_input(adjusted_row)
 
         # Extreme randomness for bigger variations
         random_factor = np.random.uniform(-5.0, 5.0)
-        prediction = self.model.predict(df) + random_factor
+        prediction = self.model.predict(processed_input) + random_factor
         
         return int(round(prediction[0]))
 
@@ -131,7 +154,6 @@ class YieldPredictor:
         plt.title("🌦️ Climate Trends Over Time")
         plt.legend()
         plt.show()
-
 
 # Example Usage
 if __name__ == "__main__":
